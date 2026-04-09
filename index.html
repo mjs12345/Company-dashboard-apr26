@@ -49,7 +49,7 @@ animation: pulse 2s infinite;
 .section-label {
 font-family: ‘IBM Plex Mono’, monospace;
 font-size: 9px; color: #404050; letter-spacing: 3px;
-margin-bottom: 10px;
+padding: 18px 24px 10px;
 }
 
 .card {
@@ -60,38 +60,10 @@ overflow: hidden;
 animation: up 0.4s ease both;
 }
 
-.card-inner { padding: 20px 24px 0; }
-
-/* TradingView widget containers */
-.widget-wrap { width: 100%; }
-
-/* News card */
-.news-card {
-background: #111116;
-border: 1px solid rgba(255,255,255,0.06);
-padding: 22px 24px;
-animation: up 0.4s ease 0.2s both;
-}
-.news-item {
-display: flex; align-items: flex-start; gap: 14px;
-padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-text-decoration: none; transition: padding-left 0.18s ease;
-}
-.news-item:last-child { border-bottom: none; padding-bottom: 0; }
-.news-item:first-child { padding-top: 0; }
-.news-item:hover { padding-left: 6px; }
-.news-num { font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; color: #76b900; opacity: 0.5; flex-shrink: 0; margin-top: 2px; width: 22px; }
-.news-body { flex: 1; }
-.news-headline { font-size: 14px; color: #c8c8d4; line-height: 1.5; margin-bottom: 4px; }
-.news-item:hover .news-headline { color: #f0f0f0; }
-.news-meta { display: flex; gap: 10px; }
-.news-source { font-size: 10px; color: #76b900; font-family: ‘IBM Plex Mono’, monospace; }
-.news-date { font-size: 10px; color: #404050; font-family: ‘IBM Plex Mono’, monospace; }
-.news-arrow { color: #303040; font-size: 14px; flex-shrink: 0; transition: all 0.18s; margin-top: 2px; }
-.news-item:hover .news-arrow { color: #76b900; transform: translateX(4px); }
+.tradingview-widget-container { width: 100%; }
 
 .notice {
-margin-top: 16px; padding: 12px 16px;
+margin-top: 4px; padding: 12px 16px;
 border: 1px solid rgba(255,255,255,0.05);
 background: rgba(255,255,255,0.02);
 font-size: 11px; color: #404050;
@@ -113,169 +85,80 @@ font-family: ‘IBM Plex Mono’, monospace; line-height: 1.7;
     </div>
     <div class="live-badge">
       <div class="live-dot"></div>
-      LIVE DATA
+      ALL DATA LIVE
     </div>
   </header>
 
-  <!-- ── Live Price Ticker ── -->
+  <!-- ── Live Price & Stats ── -->
 
-  <div class="card" style="padding: 0;">
-    <div class="card-inner">
-      <div class="section-label">CURRENT PRICE & KEY STATS</div>
-    </div>
-    <div class="widget-wrap">
-      <!-- TradingView Single Quote Widget -->
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-        {
-          "symbol": "NASDAQ:NVDA",
-          "width": "100%",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-        }
-        </script>
-      </div>
+  <div class="card">
+    <div class="section-label">CURRENT PRICE & KEY STATS</div>
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+      {
+        "symbol": "NASDAQ:NVDA",
+        "width": "100%",
+        "colorTheme": "dark",
+        "isTransparent": true,
+        "locale": "en"
+      }
+      </script>
     </div>
   </div>
 
-  <!-- ── Live Chart ── -->
+  <!-- ── Live Chart — opens on YTD by default ── -->
 
-  <div class="card" style="padding: 0;">
-    <div class="card-inner">
-      <div class="section-label">PRICE CHART — INTERACTIVE, LIVE</div>
-    </div>
-    <div class="widget-wrap">
-      <!-- TradingView Advanced Chart Widget -->
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-        {
-          "autosize": false,
-          "symbol": "NASDAQ:NVDA",
-          "width": "100%",
-          "height": "400",
-          "interval": "W",
-          "timezone": "Etc/UTC",
-          "theme": "dark",
-          "style": "2",
-          "locale": "en",
-          "backgroundColor": "rgba(11, 11, 14, 0)",
-          "gridColor": "rgba(255, 255, 255, 0.03)",
-          "hide_top_toolbar": false,
-          "hide_legend": false,
-          "save_image": false,
-          "calendar": false,
-          "hide_volume": false,
-          "support_host": "https://www.tradingview.com"
-        }
-        </script>
-      </div>
+  <div class="card">
+    <div class="section-label">PRICE CHART — CLICK BUTTONS TO CHANGE TIME PERIOD</div>
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+      {
+        "symbol": "NASDAQ:NVDA",
+        "width": "100%",
+        "height": "420",
+        "interval": "W",
+        "range": "YTD",
+        "timezone": "America/New_York",
+        "theme": "dark",
+        "style": "2",
+        "locale": "en",
+        "backgroundColor": "rgba(11, 11, 14, 0)",
+        "gridColor": "rgba(255, 255, 255, 0.03)",
+        "hide_top_toolbar": false,
+        "hide_legend": false,
+        "save_image": false,
+        "hide_volume": false,
+        "support_host": "https://www.tradingview.com"
+      }
+      </script>
     </div>
   </div>
 
-  <!-- ── News (refreshed by Claude) ── -->
+  <!-- ── Live News ── -->
 
-  <div class="news-card">
-    <div class="section-label">LATEST HEADLINES — AS OF 9 APR 2026</div>
-
-```
-<a class="news-item" href="https://www.bloomberg.com/news/articles/2026-04-09/nvidia-shares-near-level-where-technical-traders-see-a-breakout" target="_blank" rel="noopener">
-  <div class="news-num">01</div>
-  <div class="news-body">
-    <div class="news-headline">Nvidia Share Price Near Level Where Technical Traders See Breakout</div>
-    <div class="news-meta"><span class="news-source">Bloomberg</span><span class="news-date">9 Apr 2026</span></div>
-  </div>
-  <div class="news-arrow">→</div>
-</a>
-
-<a class="news-item" href="https://www.cnn.com/markets/stocks/NVDA" target="_blank" rel="noopener">
-  <div class="news-num">02</div>
-  <div class="news-body">
-    <div class="news-headline">Nvidia H100 Prices Surge 40% as New GPUs Fail to Meet Insatiable Demand</div>
-    <div class="news-meta"><span class="news-source">TipRanks</span><span class="news-date">8 Apr 2026</span></div>
-  </div>
-  <div class="news-arrow">→</div>
-</a>
-
-<a class="news-item" href="https://www.cnn.com/markets/stocks/NVDA" target="_blank" rel="noopener">
-  <div class="news-num">03</div>
-  <div class="news-body">
-    <div class="news-headline">NVDA, TSLA, PLTR: Hedge Funds Dump Stocks at Fastest Pace in 13 Years</div>
-    <div class="news-meta"><span class="news-source">TipRanks</span><span class="news-date">8 Apr 2026</span></div>
-  </div>
-  <div class="news-arrow">→</div>
-</a>
-
-<a class="news-item" href="https://www.cnn.com/markets/stocks/NVDA" target="_blank" rel="noopener">
-  <div class="news-num">04</div>
-  <div class="news-body">
-    <div class="news-headline">Super Micro Co-Founder Pleads Not Guilty in $2.5B Nvidia Server Fraud Case</div>
-    <div class="news-meta"><span class="news-source">TipRanks</span><span class="news-date">8 Apr 2026</span></div>
-  </div>
-  <div class="news-arrow">→</div>
-</a>
-
-<a class="news-item" href="https://stockanalysis.com/stocks/nvda/" target="_blank" rel="noopener">
-  <div class="news-num">05</div>
-  <div class="news-body">
-    <div class="news-headline">Nvidia Stock Rallies as Geopolitical Tensions Ease Following US-Iran Ceasefire</div>
-    <div class="news-meta"><span class="news-source">Stock Analysis</span><span class="news-date">8 Apr 2026</span></div>
-  </div>
-  <div class="news-arrow">→</div>
-</a>
-
-<a class="news-item" href="https://www.investing.com/equities/nvidia-corp-news" target="_blank" rel="noopener">
-  <div class="news-num">06</div>
-  <div class="news-body">
-    <div class="news-headline">Chinese GPU Makers Capture Nearly Half of Local Market as Nvidia's Lead Shrinks</div>
-    <div class="news-meta"><span class="news-source">Reuters</span><span class="news-date">1 Apr 2026</span></div>
-  </div>
-  <div class="news-arrow">→</div>
-</a>
-
-<a class="news-item" href="https://www.investing.com/equities/nvidia-corp-news" target="_blank" rel="noopener">
-  <div class="news-num">07</div>
-  <div class="news-body">
-    <div class="news-headline">Benchmark Reiterates Buy Rating with $250 Price Target on Nvidia</div>
-    <div class="news-meta"><span class="news-source">Investing.com</span><span class="news-date">1 Apr 2026</span></div>
-  </div>
-  <div class="news-arrow">→</div>
-</a>
-
-<a class="news-item" href="https://nvidianews.nvidia.com/" target="_blank" rel="noopener">
-  <div class="news-num">08</div>
-  <div class="news-body">
-    <div class="news-headline">Nvidia and Marvell Announce Strategic NVLink Fusion Partnership for AI Factories</div>
-    <div class="news-meta"><span class="news-source">NVIDIA Newsroom</span><span class="news-date">31 Mar 2026</span></div>
-  </div>
-  <div class="news-arrow">→</div>
-</a>
-
-<a class="news-item" href="https://nvidianews.nvidia.com/" target="_blank" rel="noopener">
-  <div class="news-num">09</div>
-  <div class="news-body">
-    <div class="news-headline">Nvidia Announces $2 Billion AI Investment; Stock Up 9% Since the Announcement</div>
-    <div class="news-meta"><span class="news-source">Motley Fool</span><span class="news-date">31 Mar 2026</span></div>
-  </div>
-  <div class="news-arrow">→</div>
-</a>
-
-<a class="news-item" href="https://www.morningstar.com/stocks/xnas/nvda/quote" target="_blank" rel="noopener">
-  <div class="news-num">10</div>
-  <div class="news-body">
-    <div class="news-headline">Nvidia GTC 2026: $1 Trillion Revenue Forecast From Blackwell and Rubin AI Products Through 2027</div>
-    <div class="news-meta"><span class="news-source">Morningstar</span><span class="news-date">18 Mar 2026</span></div>
-  </div>
-  <div class="news-arrow">→</div>
-</a>
-```
-
+  <div class="card">
+    <div class="section-label">LATEST HEADLINES — UPDATES AUTOMATICALLY</div>
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+      {
+        "feedMode": "symbol",
+        "symbol": "NASDAQ:NVDA",
+        "isTransparent": true,
+        "displayMode": "regular",
+        "width": "100%",
+        "height": "500",
+        "colorTheme": "dark",
+        "locale": "en"
+      }
+      </script>
+    </div>
   </div>
 
   <div class="notice">
-    ◈ &nbsp;Price and chart update automatically via TradingView (live market data). News headlines last refreshed 9 Apr 2026 — ask Claude to "refresh my Nvidia dashboard" for the latest headlines.
+    ◈ &nbsp;All data powered by TradingView — price, chart and news update automatically every time you open this page. No refresh needed.
   </div>
 
 </div>
