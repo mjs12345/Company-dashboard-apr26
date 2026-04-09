@@ -60,16 +60,23 @@ overflow: hidden;
 animation: up 0.4s ease both;
 }
 
+/* Two columns - fixed height so they match */
 .two-col {
 display: grid;
 grid-template-columns: 1fr 1fr;
 gap: 14px;
 margin-bottom: 14px;
 }
-.two-col .card { margin-bottom: 0; }
+.two-col .card {
+margin-bottom: 0;
+/* Fixed height so neither card overflows the other */
+height: 500px;
+overflow: hidden;
+}
 
 @media (max-width: 640px) {
 .two-col { grid-template-columns: 1fr; }
+.two-col .card { height: auto; }
 }
 
 .tradingview-widget-container { width: 100%; }
@@ -101,7 +108,7 @@ font-family: ‘IBM Plex Mono’, monospace; line-height: 1.7;
     </div>
   </header>
 
-  <!-- ── Price & Stats ── -->
+  <!-- ── 1. Price & Stats ── -->
 
   <div class="card">
     <div class="section-label">CURRENT PRICE & KEY STATS</div>
@@ -119,12 +126,12 @@ font-family: ‘IBM Plex Mono’, monospace; line-height: 1.7;
     </div>
   </div>
 
-  <!-- ── Chart ── -->
+  <!-- ── 2. Chart ── -->
 
   <div class="card">
     <div class="section-label">PRICE CHART — CLICK BUTTONS TO CHANGE TIME PERIOD</div>
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
+    <div class="tradingview-widget-container" style="height:420px">
+      <div class="tradingview-widget-container__widget" style="height:420px"></div>
       <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
       {
         "symbol": "NASDAQ:NVDA",
@@ -148,20 +155,21 @@ font-family: ‘IBM Plex Mono’, monospace; line-height: 1.7;
     </div>
   </div>
 
-  <!-- ── Analyst Ratings + Financials ── -->
+  <!-- ── 3. Technical Analysis + Financials side by side ── -->
 
   <div class="two-col">
 
 ```
+<!-- Technical Analysis / Analyst Ratings -->
 <div class="card">
-  <div class="section-label">ANALYST RATINGS</div>
-  <div class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget"></div>
+  <div class="section-label">ANALYST RATINGS & TECHNICALS</div>
+  <div class="tradingview-widget-container" style="height:440px">
+    <div class="tradingview-widget-container__widget" style="height:440px"></div>
     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
     {
       "symbol": "NASDAQ:NVDA",
       "width": "100%",
-      "height": "400",
+      "height": "440",
       "interval": "1W",
       "colorTheme": "dark",
       "isTransparent": true,
@@ -171,15 +179,16 @@ font-family: ‘IBM Plex Mono’, monospace; line-height: 1.7;
   </div>
 </div>
 
+<!-- Fundamentals / Financials -->
 <div class="card">
   <div class="section-label">FINANCIALS</div>
-  <div class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
+  <div class="tradingview-widget-container" style="height:440px">
+    <div class="tradingview-widget-container__widget" style="height:440px"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-fundamental-data.js" async>
     {
       "symbol": "NASDAQ:NVDA",
       "width": "100%",
-      "height": "400",
+      "height": "440",
       "colorTheme": "dark",
       "isTransparent": true,
       "displayMode": "compact",
@@ -192,12 +201,12 @@ font-family: ‘IBM Plex Mono’, monospace; line-height: 1.7;
 
   </div>
 
-  <!-- ── News ── -->
+  <!-- ── 4. News ── -->
 
   <div class="card">
-    <div class="section-label">LATEST NEWS</div>
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
+    <div class="section-label">LATEST NEWS — LIVE & AUTO-UPDATING</div>
+    <div class="tradingview-widget-container" style="height:500px">
+      <div class="tradingview-widget-container__widget" style="height:500px"></div>
       <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
       {
         "feedMode": "symbol",
