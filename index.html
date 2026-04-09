@@ -1,77 +1,122 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NVDA Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg: #0c0c0f;
+    --text: #d0d0d8;
+    --heading: #f0f0f0;
+    --card-bg: #111116;
+    --card-border: rgba(255,255,255,0.06);
+    --label-color: #404050;
+    --notice-border: rgba(255,255,255,0.05);
+    --notice-bg: rgba(255,255,255,0.02);
+    --notice-text: #404050;
+    --header-border: rgba(255,255,255,0.07);
+    --gradient: radial-gradient(ellipse at 15% 0%, rgba(118,185,0,0.07) 0%, transparent 55%);
+    --toggle-bg: rgba(255,255,255,0.07);
+    --toggle-hover: rgba(255,255,255,0.12);
+  }
+  [data-theme="light"] {
+    --bg: #f0f0f4;
+    --text: #2a2a3a;
+    --heading: #0c0c1a;
+    --card-bg: #ffffff;
+    --card-border: rgba(0,0,0,0.08);
+    --label-color: #888899;
+    --notice-border: rgba(0,0,0,0.06);
+    --notice-bg: rgba(0,0,0,0.02);
+    --notice-text: #888899;
+    --header-border: rgba(0,0,0,0.08);
+    --gradient: radial-gradient(ellipse at 15% 0%, rgba(118,185,0,0.12) 0%, transparent 55%);
+    --toggle-bg: rgba(0,0,0,0.06);
+    --toggle-hover: rgba(0,0,0,0.10);
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    background: #0c0c0f;
-    color: #d0d0d8;
+    background: var(--bg);
+    color: var(--text);
     font-family: 'IBM Plex Sans', sans-serif;
     min-height: 100vh;
     padding-bottom: 48px;
+    transition: background 0.2s, color 0.2s;
   }
   body::before {
     content: '';
     position: fixed; inset: 0;
-    background: radial-gradient(ellipse at 15% 0%, rgba(118,185,0,0.07) 0%, transparent 55%);
+    background: var(--gradient);
     pointer-events: none;
   }
   .container { max-width: 900px; margin: 0 auto; padding: 0 20px; position: relative; }
 
-header {
-padding: 28px 0 20px;
-border-bottom: 1px solid rgba(255,255,255,0.07);
-margin-bottom: 24px;
-display: flex; align-items: center; justify-content: space-between;
-flex-wrap: wrap; gap: 12px;
-}
-.header-left { display: flex; align-items: center; gap: 14px; }
-.ticker-pill {
-background: #76b900; color: #000;
-font-family: ‘IBM Plex Mono’, monospace;
-font-weight: 500; font-size: 14px; letter-spacing: 1px; padding: 6px 14px;
-}
-h1 { font-size: 20px; font-weight: 700; color: #f0f0f0; }
-.live-badge {
-display: flex; align-items: center; gap: 6px;
-font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; color: #76b900;
-}
-.live-dot {
-width: 7px; height: 7px; border-radius: 50%; background: #76b900;
-animation: pulse 2s infinite;
-}
-.section-label {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: 9px; color: #404050; letter-spacing: 3px;
-padding: 18px 24px 10px;
-}
-.card {
-background: #111116;
-border: 1px solid rgba(255,255,255,0.06);
-margin-bottom: 14px;
-overflow: hidden;
-width: 100%;
-animation: up 0.4s ease both;
-}
-.tradingview-widget-container { width: 100%; }
-.tradingview-widget-container__widget { width: 100%; }
+  header {
+    padding: 28px 0 20px;
+    border-bottom: 1px solid var(--header-border);
+    margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .ticker-pill {
+    background: #76b900; color: #000;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500; font-size: 14px; letter-spacing: 1px; padding: 6px 14px;
+  }
+  h1 { font-size: 20px; font-weight: 700; color: var(--heading); }
+  .live-badge {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #76b900;
+  }
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #76b900;
+    animation: pulse 2s infinite;
+  }
+  .theme-toggle {
+    background: var(--toggle-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { background: var(--toggle-hover); }
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; color: var(--label-color); letter-spacing: 3px;
+    padding: 18px 24px 10px;
+    transition: color 0.2s;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    margin-bottom: 14px;
+    overflow: hidden;
+    width: 100%;
+    animation: up 0.4s ease both;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .tradingview-widget-container { width: 100%; }
+  .tradingview-widget-container__widget { width: 100%; }
 
-.notice {
-margin-top: 4px; padding: 12px 16px;
-border: 1px solid rgba(255,255,255,0.05);
-background: rgba(255,255,255,0.02);
-font-size: 11px; color: #404050;
-font-family: ‘IBM Plex Mono’, monospace; line-height: 1.7;
-}
-@keyframes up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .notice {
+    margin-top: 4px; padding: 12px 16px;
+    border: 1px solid var(--notice-border);
+    background: var(--notice-bg);
+    font-size: 11px; color: var(--notice-text);
+    font-family: 'IBM Plex Mono', monospace; line-height: 1.7;
+    transition: color 0.2s, background 0.2s, border-color 0.2s;
+  }
+  @keyframes up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 </style>
-
 </head>
 <body>
 <div class="container">
@@ -81,124 +126,177 @@ font-family: ‘IBM Plex Mono’, monospace; line-height: 1.7;
       <div class="ticker-pill">NVDA</div>
       <h1>NVIDIA Corporation</h1>
     </div>
-    <div class="live-badge">
-      <div class="live-dot"></div>
-      ALL DATA LIVE
+    <div class="header-right">
+      <div class="live-badge">
+        <div class="live-dot"></div>
+        ALL DATA LIVE
+      </div>
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">&#9788; LIGHT</button>
     </div>
   </header>
 
   <!-- 1. Price -->
-
   <div class="card">
     <div class="section-label">CURRENT PRICE & KEY STATS</div>
-    <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container" id="widget-quote">
       <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-      {
-        "symbol": "NASDAQ:NVDA",
-        "width": "100%",
-        "colorTheme": "dark",
-        "isTransparent": true,
-        "locale": "en"
-      }
-      </script>
     </div>
   </div>
 
   <!-- 2. Chart -->
-
   <div class="card">
     <div class="section-label">PRICE CHART</div>
-    <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container" id="widget-chart">
       <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-      {
-        "symbol": "NASDAQ:NVDA",
-        "width": "100%",
-        "height": "450",
-        "interval": "D",
-        "range": "YTD",
-        "timezone": "America/New_York",
-        "theme": "dark",
-        "style": "1",
-        "locale": "en",
-        "backgroundColor": "rgba(11, 11, 14, 0)",
-        "gridColor": "rgba(255, 255, 255, 0.03)",
-        "hide_top_toolbar": false,
-        "hide_legend": false,
-        "save_image": false,
-        "hide_volume": false,
-        "support_host": "https://www.tradingview.com"
-      }
-      </script>
     </div>
   </div>
 
-  <!-- 3. Technical Analysis (full width, daily interval so dates are correct) -->
-
-  <div class="card">
-    <div class="section-label">TECHNICAL ANALYSIS & RATINGS</div>
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
-      {
-        "symbol": "NASDAQ:NVDA",
-        "width": "100%",
-        "height": "450",
-        "interval": "1D",
-        "colorTheme": "dark",
-        "isTransparent": true,
-        "locale": "en"
-      }
-      </script>
-    </div>
-  </div>
-
-  <!-- 4. Fundamentals -->
-
+  <!-- 3. Financials -->
   <div class="card">
     <div class="section-label">FINANCIALS & FUNDAMENTALS</div>
-    <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container" id="widget-financials">
       <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
-      {
-        "symbol": "NASDAQ:NVDA",
-        "width": "100%",
-        "height": "830",
-        "colorTheme": "dark",
-        "isTransparent": true,
-        "displayMode": "regular",
-        "locale": "en"
-      }
-      </script>
     </div>
   </div>
 
-  <!-- 5. News -->
-
+  <!-- 4. News -->
   <div class="card">
     <div class="section-label">LATEST NEWS</div>
-    <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container" id="widget-news">
       <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
-      {
-        "feedMode": "symbol",
-        "symbol": "NASDAQ:NVDA",
-        "isTransparent": true,
-        "displayMode": "regular",
-        "width": "100%",
-        "height": "500",
-        "colorTheme": "dark",
-        "locale": "en"
-      }
-      </script>
+    </div>
+  </div>
+
+  <!-- 5. Technical Analysis (least helpful, moved to bottom) -->
+  <div class="card">
+    <div class="section-label">TECHNICAL ANALYSIS & RATINGS</div>
+    <div class="tradingview-widget-container" id="widget-technical">
+      <div class="tradingview-widget-container__widget"></div>
     </div>
   </div>
 
   <div class="notice">
-    ◈ &nbsp;All data powered by TradingView — updates automatically every time you open this page.
+    &#9672; &nbsp;All data powered by TradingView — updates automatically every time you open this page.
   </div>
 
 </div>
+
+<script>
+  var WIDGETS = [
+    {
+      id: 'widget-quote',
+      src: 'https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js',
+      config: function(theme) {
+        return {
+          "symbol": "NASDAQ:NVDA",
+          "width": "100%",
+          "colorTheme": theme,
+          "isTransparent": true,
+          "locale": "en"
+        };
+      }
+    },
+    {
+      id: 'widget-chart',
+      src: 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js',
+      config: function(theme) {
+        return {
+          "symbol": "NASDAQ:NVDA",
+          "width": "100%",
+          "height": "450",
+          "interval": "D",
+          "range": "YTD",
+          "timezone": "America/New_York",
+          "theme": theme,
+          "style": "3",
+          "locale": "en",
+          "backgroundColor": theme === "dark" ? "rgba(11,11,14,0)" : "rgba(255,255,255,0)",
+          "gridColor": theme === "dark" ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.04)",
+          "hide_top_toolbar": false,
+          "hide_legend": false,
+          "save_image": false,
+          "hide_volume": false,
+          "support_host": "https://www.tradingview.com"
+        };
+      }
+    },
+    {
+      id: 'widget-financials',
+      src: 'https://s3.tradingview.com/external-embedding/embed-widget-financials.js',
+      config: function(theme) {
+        return {
+          "symbol": "NASDAQ:NVDA",
+          "width": "100%",
+          "height": "830",
+          "colorTheme": theme,
+          "isTransparent": true,
+          "displayMode": "regular",
+          "locale": "en"
+        };
+      }
+    },
+    {
+      id: 'widget-news',
+      src: 'https://s3.tradingview.com/external-embedding/embed-widget-timeline.js',
+      config: function(theme) {
+        return {
+          "feedMode": "symbol",
+          "symbol": "NASDAQ:NVDA",
+          "isTransparent": true,
+          "displayMode": "regular",
+          "width": "100%",
+          "height": "500",
+          "colorTheme": theme,
+          "locale": "en"
+        };
+      }
+    },
+    {
+      id: 'widget-technical',
+      src: 'https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js',
+      config: function(theme) {
+        return {
+          "symbol": "NASDAQ:NVDA",
+          "width": "100%",
+          "height": "450",
+          "interval": "1D",
+          "colorTheme": theme,
+          "isTransparent": true,
+          "locale": "en"
+        };
+      }
+    }
+  ];
+
+  function loadWidgets(theme) {
+    WIDGETS.forEach(function(w) {
+      var container = document.getElementById(w.id);
+      container.innerHTML = '<div class="tradingview-widget-container__widget"></div>';
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = w.src;
+      script.async = true;
+      script.innerHTML = JSON.stringify(w.config(theme));
+      container.appendChild(script);
+    });
+  }
+
+  function toggleTheme() {
+    var html = document.documentElement;
+    var current = html.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('nvda-theme', next);
+    document.getElementById('themeToggle').innerHTML = next === 'dark' ? '&#9788; LIGHT' : '&#9790; DARK';
+    loadWidgets(next);
+  }
+
+  // On page load: apply saved theme and load widgets
+  var savedTheme = localStorage.getItem('nvda-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.getElementById('themeToggle').innerHTML = savedTheme === 'dark' ? '&#9788; LIGHT' : '&#9790; DARK';
+  loadWidgets(savedTheme);
+</script>
+
 </body>
 </html>
