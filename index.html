@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVDA Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: rgba(255,255,255,0.07);
+    --green: #00e676;
+    --red: #ff3d57;
+    --accent: #76b900; /* Nvidia green */
+    --text: #e0e0e0;
+    --muted: #606070;
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+min-height: 100vh;
+padding: 0 0 40px;
+}
+
+/* Background texture */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background:
+radial-gradient(ellipse at 10% 10%, rgba(118,185,0,0.06) 0%, transparent 50%),
+radial-gradient(ellipse at 90% 90%, rgba(118,185,0,0.03) 0%, transparent 50%);
+pointer-events: none;
+z-index: 0;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+/* Header */
+header {
+border-bottom: 1px solid var(–border);
+padding: 22px 0 18px;
+margin-bottom: 28px;
+display: flex;
+align-items: flex-end;
+justify-content: space-between;
+}
+
+.logo-area { display: flex; align-items: center; gap: 14px; }
+
+.nvda-badge {
+background: var(–accent);
+color: #000;
+font-family: ‘DM Mono’, monospace;
+font-weight: 500;
+font-size: 13px;
+padding: 5px 12px;
+letter-spacing: 1px;
+}
+
+h1 {
+font-size: 22px;
+font-weight: 700;
+color: #fff;
+letter-spacing: -0.3px;
+}
+
+.last-updated {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+color: var(–muted);
+letter-spacing: 0.5px;
+}
+
+/* Price card */
+.price-card {
+background: var(–surface);
+border: 1px solid var(–border);
+border-left: 3px solid var(–accent);
+padding: 24px 28px;
+margin-bottom: 16px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: 20px;
+animation: fadeUp 0.4s ease both;
+}
+
+.price-main { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+
+.price-value {
+font-family: ‘DM Mono’, monospace;
+font-size: 48px;
+font-weight: 500;
+color: #fff;
+letter-spacing: -1px;
+line-height: 1;
+}
+
+.price-change {
+font-family: ‘DM Mono’, monospace;
+font-size: 18px;
+font-weight: 400;
+padding: 4px 10px;
+}
+.price-change.up { color: var(–green); background: rgba(0,230,118,0.08); }
+.price-change.down { color: var(–red); background: rgba(255,61,87,0.08); }
+
+.price-meta {
+display: flex;
+gap: 28px;
+flex-wrap: wrap;
+}
+
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label { font-size: 10px; color: var(–muted); letter-spacing: 2px; text-transform: uppercase; }
+.meta-value { font-family: ‘DM Mono’, monospace; font-size: 14px; color: var(–text); }
+
+/* Chart card */
+.chart-card {
+background: var(–surface);
+border: 1px solid var(–border);
+padding: 24px 28px;
+margin-bottom: 16px;
+animation: fadeUp 0.4s ease 0.1s both;
+}
+
+.card-title {
+font-size: 11px;
+color: var(–muted);
+letter-spacing: 3px;
+text-transform: uppercase;
+margin-bottom: 20px;
+font-family: ‘DM Mono’, monospace;
+}
+
+.chart-wrap { position: relative; height: 240px; }
+
+/* News card */
+.news-card {
+background: var(–surface);
+border: 1px solid var(–border);
+padding: 24px 28px;
+animation: fadeUp 0.4s ease 0.2s both;
+}
+
+.news-list { display: flex; flex-direction: column; }
+
+.news-item {
+display: flex;
+align-items: flex-start;
+gap: 16px;
+padding: 14px 0;
+border-bottom: 1px solid var(–border);
+text-decoration: none;
+transition: all 0.18s ease;
+}
+.news-item:last-child { border-bottom: none; }
+.news-item:hover { padding-left: 6px; }
+
+.news-num {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+color: var(–accent);
+opacity: 0.7;
+flex-shrink: 0;
+margin-top: 2px;
+width: 20px;
+}
+
+.news-content { flex: 1; }
+
+.news-headline {
+font-size: 14px;
+color: var(–text);
+line-height: 1.5;
+margin-bottom: 5px;
+font-weight: 400;
+}
+.news-item:hover .news-headline { color: #fff; }
+
+.news-meta {
+display: flex;
+gap: 12px;
+align-items: center;
+}
+
+.news-source {
+font-size: 11px;
+color: var(–accent);
+font-family: ‘DM Mono’, monospace;
+}
+
+.news-date {
+font-size: 11px;
+color: var(–muted);
+font-family: ‘DM Mono’, monospace;
+}
+
+.news-arrow {
+color: var(–muted);
+font-size: 14px;
+flex-shrink: 0;
+transition: transform 0.18s ease, color 0.18s ease;
+margin-top: 2px;
+}
+.news-item:hover .news-arrow { transform: translateX(4px); color: var(–accent); }
+
+/* Loading / error states */
+.loading {
+display: flex;
+align-items: center;
+gap: 10px;
+color: var(–muted);
+font-family: ‘DM Mono’, monospace;
+font-size: 12px;
+letter-spacing: 2px;
+padding: 20px 0;
+}
+
+.spinner {
+width: 14px; height: 14px;
+border: 2px solid var(–border);
+border-top-color: var(–accent);
+border-radius: 50%;
+animation: spin 0.8s linear infinite;
+flex-shrink: 0;
+}
+
+.error-msg {
+color: var(–red);
+font-family: ‘DM Mono’, monospace;
+font-size: 12px;
+padding: 16px 0;
+}
+
+/* Animations */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Responsive */
+@media (max-width: 600px) {
+.price-value { font-size: 36px; }
+header { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo-area">
+      <div class="nvda-badge">NVDA</div>
+      <h1>NVIDIA Dashboard</h1>
+    </div>
+    <div class="last-updated" id="lastUpdated">Loading...</div>
+  </header>
+
+  <!-- Price Section -->
+
+  <div class="price-card" id="priceCard">
+    <div class="loading"><div class="spinner"></div>FETCHING PRICE...</div>
+  </div>
+
+  <!-- Chart Section -->
+
+  <div class="chart-card">
+    <div class="card-title">Year-to-Date Price</div>
+    <div class="chart-wrap">
+      <div class="loading" id="chartLoading"><div class="spinner"></div>LOADING CHART...</div>
+      <canvas id="priceChart" style="display:none"></canvas>
+    </div>
+  </div>
+
+  <!-- News Section -->
+
+  <div class="news-card">
+    <div class="card-title">Latest News</div>
+    <div id="newsList">
+      <div class="loading"><div class="spinner"></div>FETCHING HEADLINES...</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API_KEY = 'Oi1r6Ke3zF5Vzxln0njEXkfqqbJHyo8L';
+const SYMBOL = 'NVDA';
+
+// ── Helpers ──────────────────────────────────────────────────────────────
+
+function formatPrice(n) {
+  return '$' + parseFloat(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function formatChange(change, pct) {
+  const sign = change >= 0 ? '+' : '';
+  return `${sign}${parseFloat(change).toFixed(2)} (${sign}${parseFloat(pct).toFixed(2)}%)`;
+}
+
+function formatDate(d) {
+  return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function formatNum(n) {
+  if (!n) return 'N/A';
+  if (n >= 1e12) return '$' + (n / 1e12).toFixed(2) + 'T';
+  if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M';
+  return '$' + n.toLocaleString();
+}
+
+// ── Price ────────────────────────────────────────────────────────────────
+
+async function loadPrice() {
+  try {
+    const res = await fetch(
+      `https://financialmodelingprep.com/api/v3/quote/${SYMBOL}?apikey=${API_KEY}`
+    );
+    const data = await res.json();
+    if (!data || !data[0]) throw new Error('No data');
+    const q = data[0];
+
+    const isUp = q.change >= 0;
+    const changeClass = isUp ? 'up' : 'down';
+
+    document.getElementById('priceCard').innerHTML = `
+      <div class="price-main">
+        <div class="price-value">${formatPrice(q.price)}</div>
+        <div class="price-change ${changeClass}">${formatChange(q.change, q.changesPercentage)}</div>
+      </div>
+      <div class="price-meta">
+        <div class="meta-item">
+          <span class="meta-label">Open</span>
+          <span class="meta-value">${formatPrice(q.open)}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Day High</span>
+          <span class="meta-value">${formatPrice(q.dayHigh)}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Day Low</span>
+          <span class="meta-value">${formatPrice(q.dayLow)}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">52W High</span>
+          <span class="meta-value">${formatPrice(q.yearHigh)}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Mkt Cap</span>
+          <span class="meta-value">${formatNum(q.marketCap)}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">P/E</span>
+          <span class="meta-value">${q.pe ? parseFloat(q.pe).toFixed(1) + 'x' : 'N/A'}</span>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('lastUpdated').textContent =
+      'Updated: ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+  } catch (e) {
+    document.getElementById('priceCard').innerHTML =
+      `<div class="error-msg">Could not load price data. Check your API key or try again.</div>`;
+  }
+}
+
+// ── Chart ────────────────────────────────────────────────────────────────
+
+async function loadChart() {
+  try {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+    const today = now.toISOString().split('T')[0];
+
+    const res = await fetch(
+      `https://financialmodelingprep.com/api/v3/historical-price-full/${SYMBOL}?from=${startOfYear}&to=${today}&apikey=${API_KEY}`
+    );
+    const data = await res.json();
+    if (!data.historical || data.historical.length === 0) throw new Error('No chart data');
+
+    const sorted = data.historical.reverse();
+    const labels = sorted.map(d => d.date);
+    const prices = sorted.map(d => d.close);
+
+    const firstPrice = prices[0];
+    const lastPrice = prices[prices.length - 1];
+    const ytdReturn = ((lastPrice - firstPrice) / firstPrice * 100).toFixed(2);
+    const isPositive = lastPrice >= firstPrice;
+    const lineColor = isPositive ? '#00e676' : '#ff3d57';
+    const fillColor = isPositive ? 'rgba(0,230,118,0.06)' : 'rgba(255,61,87,0.06)';
+
+    document.getElementById('chartLoading').style.display = 'none';
+    const canvas = document.getElementById('priceChart');
+    canvas.style.display = 'block';
+
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          data: prices,
+          borderColor: lineColor,
+          borderWidth: 1.5,
+          backgroundColor: fillColor,
+          fill: true,
+          pointRadius: 0,
+          tension: 0.1,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1a1a24',
+            borderColor: 'rgba(255,255,255,0.1)',
+            borderWidth: 1,
+            titleColor: '#888',
+            bodyColor: '#fff',
+            titleFont: { family: 'DM Mono', size: 11 },
+            bodyFont: { family: 'DM Mono', size: 13 },
+            callbacks: {
+              title: ctx => ctx[0].label,
+              label: ctx => ' $' + ctx.parsed.y.toFixed(2),
+            }
+          },
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(255,255,255,0.03)' },
+            ticks: {
+              color: '#505060',
+              font: { family: 'DM Mono', size: 10 },
+              maxTicksLimit: 8,
+              maxRotation: 0,
+            },
+            border: { color: 'rgba(255,255,255,0.06)' },
+          },
+          y: {
+            position: 'right',
+            grid: { color: 'rgba(255,255,255,0.03)' },
+            ticks: {
+              color: '#505060',
+              font: { family: 'DM Mono', size: 10 },
+              callback: v => '$' + v.toFixed(0),
+            },
+            border: { color: 'rgba(255,255,255,0.06)' },
+          }
+        }
+      }
+    });
+
+    // Add YTD return label
+    const chartCard = canvas.closest('.chart-card');
+    const titleEl = chartCard.querySelector('.card-title');
+    titleEl.innerHTML = `Year-to-Date Price &nbsp;<span style="color:${lineColor};font-size:12px">${isPositive ? '+' : ''}${ytdReturn}% YTD</span>`;
+
+  } catch (e) {
+    document.getElementById('chartLoading').innerHTML =
+      `<div class="error-msg">Could not load chart data.</div>`;
+  }
+}
+
+// ── News ─────────────────────────────────────────────────────────────────
+
+async function loadNews() {
+  try {
+    const res = await fetch(
+      `https://financialmodelingprep.com/api/v3/stock_news?tickers=${SYMBOL}&limit=15&apikey=${API_KEY}`
+    );
+    const data = await res.json();
+    if (!data || data.length === 0) throw new Error('No news');
+
+    const html = data.map((item, i) => {
+      const date = formatDate(item.publishedDate);
+      const source = item.site || 'News';
+      return `
+        <a class="news-item" href="${item.url}" target="_blank" rel="noopener">
+          <div class="news-num">${String(i + 1).padStart(2, '0')}</div>
+          <div class="news-content">
+            <div class="news-headline">${item.title}</div>
+            <div class="news-meta">
+              <span class="news-source">${source}</span>
+              <span class="news-date">${date}</span>
+            </div>
+          </div>
+          <div class="news-arrow">→</div>
+        </a>
+      `;
+    }).join('');
+
+    document.getElementById('newsList').innerHTML = html;
+
+  } catch (e) {
+    document.getElementById('newsList').innerHTML =
+      `<div class="error-msg">Could not load news. Check your API key or try again.</div>`;
+  }
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────
+
+loadPrice();
+loadChart();
+loadNews();
+</script>
+
+</body>
+</html>
