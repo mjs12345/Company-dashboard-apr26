@@ -22,81 +22,84 @@
     pointer-events: none;
   }
   .container { max-width: 900px; margin: 0 auto; padding: 0 20px; position: relative; }
-  header {
-    padding: 28px 0 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    margin-bottom: 28px;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 12px;
-  }
-  .header-left { display: flex; align-items: center; gap: 14px; }
-  .ticker-pill {
-    background: #76b900; color: #000;
-    font-family: 'IBM Plex Mono', monospace;
-    font-weight: 500; font-size: 14px; letter-spacing: 1px; padding: 6px 14px;
-  }
-  h1 { font-size: 20px; font-weight: 700; color: #f0f0f0; }
-  .updated { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #404050; }
-  .card {
-    background: #111116; border: 1px solid rgba(255,255,255,0.06);
-    padding: 24px 28px; margin-bottom: 14px;
-    animation: up 0.4s ease both;
-  }
-  .price-card { border-left: 3px solid #76b900; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
-  .price-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #404050; letter-spacing: 3px; margin-bottom: 8px; }
-  .price-main { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
-  .price-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 300; color: #fff; letter-spacing: -2px; line-height: 1; }
-  .price-change { font-family: 'IBM Plex Mono', monospace; font-size: 16px; padding: 4px 10px; }
-  .up { color: #76b900; background: rgba(118,185,0,0.1); }
-  .down { color: #ff4f5a; background: rgba(255,79,90,0.1); }
-  .price-sub { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #505060; margin-top: 8px; }
-  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px 28px; }
-  .stat { display: flex; flex-direction: column; gap: 4px; }
-  .stat-label { font-size: 9px; color: #404050; letter-spacing: 2px; font-family: 'IBM Plex Mono', monospace; }
-  .stat-value { font-size: 14px; color: #c0c0cc; font-family: 'IBM Plex Mono', monospace; }
-  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 8px; }
-  .card-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #404050; letter-spacing: 3px; }
-  .ytd-badge { font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 3px 10px; }
 
-/* SVG Chart */
-.chart-container { width: 100%; position: relative; }
-.chart-svg { width: 100%; height: 220px; overflow: visible; }
-.tooltip-box {
-position: absolute; background: #1a1a22; border: 1px solid rgba(255,255,255,0.08);
-padding: 8px 12px; pointer-events: none; opacity: 0; transition: opacity 0.15s;
-font-family: ‘IBM Plex Mono’, monospace; font-size: 12px; color: #e0e0e8;
-white-space: nowrap; z-index: 10;
+header {
+padding: 28px 0 20px;
+border-bottom: 1px solid rgba(255,255,255,0.07);
+margin-bottom: 24px;
+display: flex; align-items: center; justify-content: space-between;
+flex-wrap: wrap; gap: 12px;
 }
-.tooltip-date { font-size: 10px; color: #606070; margin-bottom: 2px; }
+.header-left { display: flex; align-items: center; gap: 14px; }
+.ticker-pill {
+background: #76b900; color: #000;
+font-family: ‘IBM Plex Mono’, monospace;
+font-weight: 500; font-size: 14px; letter-spacing: 1px; padding: 6px 14px;
+}
+h1 { font-size: 20px; font-weight: 700; color: #f0f0f0; }
+.live-badge {
+display: flex; align-items: center; gap: 6px;
+font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; color: #76b900;
+}
+.live-dot {
+width: 7px; height: 7px; border-radius: 50%; background: #76b900;
+animation: pulse 2s infinite;
+}
 
-/* News */
+.section-label {
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 9px; color: #404050; letter-spacing: 3px;
+margin-bottom: 10px;
+}
+
+.card {
+background: #111116;
+border: 1px solid rgba(255,255,255,0.06);
+margin-bottom: 14px;
+overflow: hidden;
+animation: up 0.4s ease both;
+}
+
+.card-inner { padding: 20px 24px 0; }
+
+/* TradingView widget containers */
+.widget-wrap { width: 100%; }
+
+/* News card */
+.news-card {
+background: #111116;
+border: 1px solid rgba(255,255,255,0.06);
+padding: 22px 24px;
+animation: up 0.4s ease 0.2s both;
+}
 .news-item {
-display: flex; align-items: flex-start; gap: 16px;
-padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+display: flex; align-items: flex-start; gap: 14px;
+padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
 text-decoration: none; transition: padding-left 0.18s ease;
 }
 .news-item:last-child { border-bottom: none; padding-bottom: 0; }
 .news-item:first-child { padding-top: 0; }
 .news-item:hover { padding-left: 6px; }
-.news-num { font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; color: #76b900; opacity: 0.6; flex-shrink: 0; margin-top: 2px; width: 22px; }
+.news-num { font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; color: #76b900; opacity: 0.5; flex-shrink: 0; margin-top: 2px; width: 22px; }
 .news-body { flex: 1; }
-.news-headline { font-size: 14px; color: #c8c8d4; line-height: 1.5; margin-bottom: 5px; }
+.news-headline { font-size: 14px; color: #c8c8d4; line-height: 1.5; margin-bottom: 4px; }
 .news-item:hover .news-headline { color: #f0f0f0; }
 .news-meta { display: flex; gap: 10px; }
 .news-source { font-size: 10px; color: #76b900; font-family: ‘IBM Plex Mono’, monospace; }
 .news-date { font-size: 10px; color: #404050; font-family: ‘IBM Plex Mono’, monospace; }
 .news-arrow { color: #303040; font-size: 14px; flex-shrink: 0; transition: all 0.18s; margin-top: 2px; }
 .news-item:hover .news-arrow { color: #76b900; transform: translateX(4px); }
+
 .notice {
 margin-top: 16px; padding: 12px 16px;
-border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);
-font-size: 11px; color: #404050; font-family: ‘IBM Plex Mono’, monospace; line-height: 1.7;
+border: 1px solid rgba(255,255,255,0.05);
+background: rgba(255,255,255,0.02);
+font-size: 11px; color: #404050;
+font-family: ‘IBM Plex Mono’, monospace; line-height: 1.7;
 }
+
 @keyframes up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-@media (max-width: 580px) {
-.price-big { font-size: 38px; }
-.stats-grid { grid-template-columns: repeat(2, 1fr); }
-}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 </style>
 
 </head>
@@ -108,52 +111,74 @@ font-size: 11px; color: #404050; font-family: ‘IBM Plex Mono’, monospace; li
       <div class="ticker-pill">NVDA</div>
       <h1>NVIDIA Corporation</h1>
     </div>
-    <div class="updated">Data as of 9 Apr 2026 · NASDAQ</div>
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      LIVE DATA
+    </div>
   </header>
 
-  <!-- Price -->
+  <!-- ── Live Price Ticker ── -->
 
-  <div class="card price-card">
-    <div>
-      <div class="price-label">CURRENT PRICE</div>
-      <div class="price-main">
-        <div class="price-big">$180.90</div>
-        <div class="price-change up">+$3.98 (+2.23%)</div>
-      </div>
-      <div class="price-sub">Today's range: $180.31 — $185.26</div>
+  <div class="card" style="padding: 0;">
+    <div class="card-inner">
+      <div class="section-label">CURRENT PRICE & KEY STATS</div>
     </div>
-    <div class="stats-grid">
-      <div class="stat"><span class="stat-label">52W HIGH</span><span class="stat-value">$212.19</span></div>
-      <div class="stat"><span class="stat-label">52W LOW</span><span class="stat-value">$95.04</span></div>
-      <div class="stat"><span class="stat-label">MKT CAP</span><span class="stat-value">$4.48T</span></div>
-      <div class="stat"><span class="stat-label">P/E RATIO</span><span class="stat-value">37.2x</span></div>
-      <div class="stat"><span class="stat-label">VOLUME</span><span class="stat-value">147.7M</span></div>
-      <div class="stat"><span class="stat-label">AVG VOL</span><span class="stat-value">165.6M</span></div>
+    <div class="widget-wrap">
+      <!-- TradingView Single Quote Widget -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+        {
+          "symbol": "NASDAQ:NVDA",
+          "width": "100%",
+          "colorTheme": "dark",
+          "isTransparent": true,
+          "locale": "en"
+        }
+        </script>
+      </div>
     </div>
   </div>
 
-  <!-- Chart -->
+  <!-- ── Live Chart ── -->
 
-  <div class="card" style="animation-delay:0.1s">
-    <div class="card-header">
-      <div class="card-title">YEAR-TO-DATE PRICE</div>
-      <div class="ytd-badge up">+32.8% YTD</div>
+  <div class="card" style="padding: 0;">
+    <div class="card-inner">
+      <div class="section-label">PRICE CHART — INTERACTIVE, LIVE</div>
     </div>
-    <div class="chart-container">
-      <div class="tooltip-box" id="tooltip">
-        <div class="tooltip-date" id="tooltip-date"></div>
-        <div id="tooltip-price"></div>
+    <div class="widget-wrap">
+      <!-- TradingView Advanced Chart Widget -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+        {
+          "autosize": false,
+          "symbol": "NASDAQ:NVDA",
+          "width": "100%",
+          "height": "400",
+          "interval": "W",
+          "timezone": "Etc/UTC",
+          "theme": "dark",
+          "style": "2",
+          "locale": "en",
+          "backgroundColor": "rgba(11, 11, 14, 0)",
+          "gridColor": "rgba(255, 255, 255, 0.03)",
+          "hide_top_toolbar": false,
+          "hide_legend": false,
+          "save_image": false,
+          "calendar": false,
+          "hide_volume": false,
+          "support_host": "https://www.tradingview.com"
+        }
+        </script>
       </div>
-      <svg class="chart-svg" id="chartSvg" viewBox="0 0 800 200" preserveAspectRatio="none"></svg>
     </div>
   </div>
 
-  <!-- News -->
+  <!-- ── News (refreshed by Claude) ── -->
 
-  <div class="card" style="animation-delay:0.2s">
-    <div class="card-header">
-      <div class="card-title">LATEST HEADLINES</div>
-    </div>
+  <div class="news-card">
+    <div class="section-label">LATEST HEADLINES — AS OF 9 APR 2026</div>
 
 ```
 <a class="news-item" href="https://www.bloomberg.com/news/articles/2026-04-09/nvidia-shares-near-level-where-technical-traders-see-a-breakout" target="_blank" rel="noopener">
@@ -250,158 +275,9 @@ font-size: 11px; color: #404050; font-family: ‘IBM Plex Mono’, monospace; li
   </div>
 
   <div class="notice">
-    ◈ &nbsp;Generated 9 Apr 2026. Price data from Robinhood/Morningstar. News from Bloomberg, Reuters, TipRanks & NVIDIA Newsroom. To refresh, ask Claude to "refresh my Nvidia dashboard."
+    ◈ &nbsp;Price and chart update automatically via TradingView (live market data). News headlines last refreshed 9 Apr 2026 — ask Claude to "refresh my Nvidia dashboard" for the latest headlines.
   </div>
 
 </div>
-
-<script>
-const data = [
-  { date: "2 Jan",  price: 136.2 },
-  { date: "9 Jan",  price: 140.8 },
-  { date: "16 Jan", price: 138.5 },
-  { date: "23 Jan", price: 143.2 },
-  { date: "30 Jan", price: 149.6 },
-  { date: "6 Feb",  price: 153.4 },
-  { date: "13 Feb", price: 158.1 },
-  { date: "20 Feb", price: 161.7 },
-  { date: "27 Feb", price: 155.3 },
-  { date: "6 Mar",  price: 159.8 },
-  { date: "13 Mar", price: 168.2 },
-  { date: "20 Mar", price: 174.5 },
-  { date: "27 Mar", price: 178.9 },
-  { date: "3 Apr",  price: 180.1 },
-  { date: "9 Apr",  price: 180.9 },
-];
-
-const W = 800, H = 200;
-const padL = 10, padR = 50, padT = 16, padB = 32;
-const chartW = W - padL - padR;
-const chartH = H - padT - padB;
-
-const prices = data.map(d => d.price);
-const minP = Math.min(...prices) - 5;
-const maxP = Math.max(...prices) + 5;
-
-function px(i) { return padL + (i / (data.length - 1)) * chartW; }
-function py(p) { return padT + chartH - ((p - minP) / (maxP - minP)) * chartH; }
-
-const svg = document.getElementById('chartSvg');
-
-// Grid lines + y-axis labels
-const yTicks = 4;
-for (let i = 0; i <= yTicks; i++) {
-  const p = minP + (i / yTicks) * (maxP - minP);
-  const y = py(p);
-  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-  line.setAttribute('x1', padL); line.setAttribute('x2', W - padR);
-  line.setAttribute('y1', y); line.setAttribute('y2', y);
-  line.setAttribute('stroke', 'rgba(255,255,255,0.04)');
-  line.setAttribute('stroke-width', '1');
-  svg.appendChild(line);
-
-  const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  label.setAttribute('x', W - padR + 6);
-  label.setAttribute('y', y + 4);
-  label.setAttribute('fill', '#404050');
-  label.setAttribute('font-size', '9');
-  label.setAttribute('font-family', 'IBM Plex Mono, monospace');
-  label.textContent = '$' + Math.round(p);
-  svg.appendChild(label);
-}
-
-// X-axis labels (every 3rd point)
-data.forEach((d, i) => {
-  if (i % 3 !== 0) return;
-  const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  label.setAttribute('x', px(i));
-  label.setAttribute('y', H - 6);
-  label.setAttribute('fill', '#404050');
-  label.setAttribute('font-size', '9');
-  label.setAttribute('font-family', 'IBM Plex Mono, monospace');
-  label.setAttribute('text-anchor', 'middle');
-  label.textContent = d.date;
-  svg.appendChild(label);
-});
-
-// Fill area
-const fillPoints = data.map((d, i) => `${px(i)},${py(d.price)}`).join(' ');
-const fillPath = `M ${px(0)},${py(data[0].price)} ` +
-  data.slice(1).map((d, i) => {
-    const x0 = px(i), y0 = py(data[i].price);
-    const x1 = px(i + 1), y1 = py(d.price);
-    const cx = (x0 + x1) / 2;
-    return `C ${cx},${y0} ${cx},${y1} ${x1},${y1}`;
-  }).join(' ') +
-  ` L ${px(data.length-1)},${padT + chartH} L ${px(0)},${padT + chartH} Z`;
-
-const fill = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-fill.setAttribute('d', fillPath);
-fill.setAttribute('fill', 'rgba(118,185,0,0.08)');
-svg.appendChild(fill);
-
-// Line
-const linePath = `M ${px(0)},${py(data[0].price)} ` +
-  data.slice(1).map((d, i) => {
-    const x0 = px(i), y0 = py(data[i].price);
-    const x1 = px(i + 1), y1 = py(d.price);
-    const cx = (x0 + x1) / 2;
-    return `C ${cx},${y0} ${cx},${y1} ${x1},${y1}`;
-  }).join(' ');
-
-const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-line.setAttribute('d', linePath);
-line.setAttribute('fill', 'none');
-line.setAttribute('stroke', '#76b900');
-line.setAttribute('stroke-width', '2');
-svg.appendChild(line);
-
-// Hover dots + interaction
-const tooltip = document.getElementById('tooltip');
-const tooltipDate = document.getElementById('tooltip-date');
-const tooltipPrice = document.getElementById('tooltip-price');
-const container = svg.parentElement;
-
-data.forEach((d, i) => {
-  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-  circle.setAttribute('cx', px(i));
-  circle.setAttribute('cy', py(d.price));
-  circle.setAttribute('r', '5');
-  circle.setAttribute('fill', '#76b900');
-  circle.setAttribute('opacity', '0');
-  circle.setAttribute('style', 'cursor:pointer; transition: opacity 0.1s');
-  svg.appendChild(circle);
-
-  // Invisible hit area
-  const hit = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  const hitW = chartW / data.length;
-  hit.setAttribute('x', px(i) - hitW / 2);
-  hit.setAttribute('y', padT);
-  hit.setAttribute('width', hitW);
-  hit.setAttribute('height', chartH);
-  hit.setAttribute('fill', 'transparent');
-  hit.setAttribute('style', 'cursor:crosshair');
-  svg.appendChild(hit);
-
-  hit.addEventListener('mouseenter', () => {
-    circle.setAttribute('opacity', '1');
-    tooltipDate.textContent = d.date;
-    tooltipPrice.textContent = '$' + d.price.toFixed(2);
-    const rect = container.getBoundingClientRect();
-    const svgRect = svg.getBoundingClientRect();
-    const scaleX = svgRect.width / W;
-    let left = px(i) * scaleX + 10;
-    if (left > svgRect.width - 120) left = px(i) * scaleX - 110;
-    tooltip.style.left = left + 'px';
-    tooltip.style.top = (py(d.price) * (svgRect.height / H) - 20) + 'px';
-    tooltip.style.opacity = '1';
-  });
-  hit.addEventListener('mouseleave', () => {
-    circle.setAttribute('opacity', '0');
-    tooltip.style.opacity = '0';
-  });
-});
-</script>
-
 </body>
 </html>
