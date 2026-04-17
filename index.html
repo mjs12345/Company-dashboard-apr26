@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NVDA Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <style>
   :root {
     --bg: #0c0c0f;
@@ -114,6 +115,7 @@
     font-family: 'IBM Plex Mono', monospace; line-height: 1.7;
     transition: color 0.2s, background 0.2s, border-color 0.2s;
   }
+  .chart-wrap { padding: 20px 24px 24px; }
   @keyframes up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 </style>
@@ -159,7 +161,15 @@
     </div>
   </div>
 
-  <!-- 4. News -->
+  <!-- 4. Revenue & Earnings chart (FMP) -->
+  <div class="card">
+    <div class="section-label">REVENUE & EARNINGS — LAST 8 QUARTERS</div>
+    <div class="chart-wrap">
+      <canvas id="revenueChart"></canvas>
+    </div>
+  </div>
+
+  <!-- 5. News -->
   <div class="card">
     <div class="section-label">LATEST NEWS</div>
     <div class="tradingview-widget-container" id="widget-news">
@@ -289,6 +299,87 @@
     localStorage.setItem('nvda-theme', next);
     document.getElementById('themeToggle').innerHTML = next === 'dark' ? '&#9788; LIGHT' : '&#9790; DARK';
     loadWidgets(next);
+    if (cachedFinancials) renderChart(cachedFinancials, next);
+  }
+
+  // --- Revenue & Earnings chart ---
+  var cachedFinancials = null;
+  var revenueChart = null;
+
+  function renderChart(data, theme) {
+    var textColor = theme === 'dark' ? '#d0d0d8' : '#2a2a3a';
+    var gridColor = theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    var sorted = data.slice().reverse();
+    var labels = sorted.map(function(q) {
+      var d = new Date(q.date);
+      return months[d.getMonth()] + ' \'' + String(d.getFullYear()).slice(2);
+    });
+    var revenue  = sorted.map(function(q) { return +(q.revenue  / 1e9).toFixed(2); });
+    var netIncome = sorted.map(function(q) { return +(q.netIncome / 1e9).toFixed(2); });
+
+    if (revenueChart) revenueChart.destroy();
+    var ctx = document.getElementById('revenueChart').getContext('2d');
+    revenueChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Revenue',
+            data: revenue,
+            backgroundColor: '#76b900',
+            borderRadius: 3
+          },
+          {
+            label: 'Net Income',
+            data: netIncome,
+            backgroundColor: 'rgba(118,185,0,0.45)',
+            borderRadius: 3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: textColor, font: { family: 'IBM Plex Mono', size: 11 } }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                return ctx.dataset.label + ': $' + ctx.raw.toFixed(1) + 'B';
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: textColor, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { color: gridColor }
+          },
+          y: {
+            ticks: {
+              color: textColor,
+              font: { family: 'IBM Plex Mono', size: 10 },
+              callback: function(v) { return '$' + v + 'B'; }
+            },
+            grid: { color: gridColor }
+          }
+        }
+      }
+    });
+  }
+
+  function fetchAndRenderChart(theme) {
+    fetch('https://financialmodelingprep.com/api/v3/income-statement/NVDA?period=quarter&limit=8&apikey=Oi1r6Ke3zF5Vzxln0njEXkfqqbJHyo8L')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        cachedFinancials = data;
+        renderChart(data, theme);
+      })
+      .catch(function(e) { console.error('FMP fetch failed', e); });
   }
 
   // On page load: apply saved theme and load widgets
@@ -296,6 +387,7 @@
   document.documentElement.setAttribute('data-theme', savedTheme);
   document.getElementById('themeToggle').innerHTML = savedTheme === 'dark' ? '&#9788; LIGHT' : '&#9790; DARK';
   loadWidgets(savedTheme);
+  fetchAndRenderChart(savedTheme);
 </script>
 
 </body>
